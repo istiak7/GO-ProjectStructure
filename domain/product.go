@@ -1,9 +1,12 @@
 package domain
 
+import "time"
+
 type Product struct {
-	ID    int     `json:"id" example:"1"`
-	Name  string  `json:"name" example:"Gaming Keyboard"`
-	Price float64 `json:"price" example:"75.50"`
+	ID        int       `json:"id" example:"1" gorm:"primaryKey"`
+	Name      string    `json:"name" example:"Gaming Keyboard"`
+	Price     float64   `json:"price" example:"75.50"`
+	CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime"`
 }
 
 type ProductRepository interface {

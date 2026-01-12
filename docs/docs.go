@@ -15,37 +15,27 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/products": {
-            "get": {
-                "tags": [
-                    "products"
-                ],
-                "summary": "List all products",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/domain.Product"
-                            }
-                        }
-                    }
-                }
-            },
+        "/suppliers": {
             "post": {
-                "tags": [
-                    "products"
+                "description": "Create a new supplier",
+                "consumes": [
+                    "application/json"
                 ],
-                "summary": "Create a product",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "suppliers"
+                ],
+                "summary": "Create a new supplier",
                 "parameters": [
                     {
-                        "description": "Product Body",
-                        "name": "product",
+                        "description": "Supplier data",
+                        "name": "supplier",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.Product"
+                            "$ref": "#/definitions/dtos.CreateSupplierDto"
                         }
                     }
                 ],
@@ -53,71 +43,30 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/domain.Product"
+                            "type": "object",
+                            "additionalProperties": true
                         }
                     }
                 }
             }
-        },
-        "/products/{id}": {
-            "put": {
-                "tags": [
-                    "products"
-                ],
-                "summary": "Update a product",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Product ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "New Data",
-                        "name": "product",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/domain.Product"
-                        }
-                    }
-                ],
-                "responses": {}
-            },
-            "delete": {
-                "tags": [
-                    "products"
-                ],
-                "summary": "Delete a product",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Product ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {}
-            }
         }
     },
     "definitions": {
-        "domain.Product": {
+        "dtos.CreateSupplierDto": {
             "type": "object",
+            "required": [
+                "contact",
+                "name"
+            ],
             "properties": {
+                "contact": {
+                    "type": "string"
+                },
                 "id": {
-                    "type": "integer",
-                    "example": 1
+                    "type": "integer"
                 },
                 "name": {
-                    "type": "string",
-                    "example": "Gaming Keyboard"
-                },
-                "price": {
-                    "type": "number",
-                    "example": 75.5
+                    "type": "string"
                 }
             }
         }
@@ -130,8 +79,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8080",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "Test API",
-	Description:      "This is Testing Purpose API",
+	Title:            "Product & Supplier API",
+	Description:      "API for managing products and suppliers",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

@@ -1,79 +1,45 @@
 basePath: /
 definitions:
-  domain.Product:
+  dtos.CreateSupplierDto:
     properties:
+      contact:
+        type: string
       id:
-        example: 1
         type: integer
       name:
-        example: Gaming Keyboard
         type: string
-      price:
-        example: 75.5
-        type: number
+    required:
+    - contact
+    - name
     type: object
 host: localhost:8080
 info:
   contact: {}
-  description: Product Management API in Go
-  title: Clean CRUD Postgres API
+  description: API for managing products and suppliers
+  title: Product & Supplier API
   version: "1.0"
 paths:
-  /products:
-    get:
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/domain.Product'
-            type: array
-      summary: List all products
-      tags:
-      - products
+  /suppliers:
     post:
+      consumes:
+      - application/json
+      description: Create a new supplier
       parameters:
-      - description: Product Body
+      - description: Supplier data
         in: body
-        name: product
+        name: supplier
         required: true
         schema:
-          $ref: '#/definitions/domain.Product'
+          $ref: '#/definitions/dtos.CreateSupplierDto'
+      produces:
+      - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/domain.Product'
-      summary: Create a product
+            additionalProperties: true
+            type: object
+      summary: Create a new supplier
       tags:
-      - products
-  /products/{id}:
-    delete:
-      parameters:
-      - description: Product ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses: {}
-      summary: Delete a product
-      tags:
-      - products
-    put:
-      parameters:
-      - description: Product ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: New Data
-        in: body
-        name: product
-        required: true
-        schema:
-          $ref: '#/definitions/domain.Product'
-      responses: {}
-      summary: Update a product
-      tags:
-      - products
+      - suppliers
 swagger: "2.0"

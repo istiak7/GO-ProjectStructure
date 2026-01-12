@@ -6,16 +6,17 @@ import (
 	"log"
 	"net/http"
 
-	"CrudApp/delivery"
+	"CrudApp/delivery/Suppliers"
 	"CrudApp/repository"
 	"CrudApp/usecase"
 
 	// 1. Standard SQL and Migration imports
-	_ "github.com/lib/pq"
 	_ "CrudApp/docs"
+
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+	_ "github.com/lib/pq"
 	httpSwagger "github.com/swaggo/http-swagger"
 
 	// 2. GORM imports
@@ -44,6 +45,11 @@ func runMigrations(db *sql.DB) {
 	fmt.Println("Migrations applied!")
 }
 
+// @title Product & Supplier API
+// @version 1.0
+// @description API for managing products and suppliers
+// @host localhost:8080
+// @BasePath /
 func main() {
 	dsn := "postgres://postgres:istiakahmed@localhost:5432/gatekeeper?sslmode=disable"
 
@@ -71,18 +77,15 @@ func main() {
 		log.Fatal("GORM Initialization Error:", err)
 	}
 
-	// 2. DEPENDENCY INJECTION
-	// Pass the gormDB to your repository
-	repo := repository.NewPostgresRepo(gormDB) 
-	uc := &usecase.ProductUsecase{Repo: repo}
-	h := &delivery.ProductHandler{Usecase: uc}
+	
+	// Supplier Dependency Injection
+	supplierRepo := repository.NewSupplierRepo(gormDB)
+	supplierUC := &usecase.SupplierUsecase{Repo: supplierRepo}
+	supplierHandler := &Suppliers.SupplierHandler{Usecase: supplierUC}
 
 	// 3. ROUTING
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /products", h.GetProducts)
-	mux.HandleFunc("POST /products", h.CreateProduct)
-	mux.HandleFunc("PUT /products/{id}", h.UpdateProduct)
-	mux.HandleFunc("DELETE /products/{id}", h.DeleteProduct)
+	mux.HandleFunc("POST /suppliers", supplierHandler.CreateSupplier)
 
 	mux.Handle("/swagger/", httpSwagger.WrapHandler)
 
