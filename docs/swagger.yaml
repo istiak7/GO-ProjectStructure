@@ -1,0 +1,79 @@
+basePath: /
+definitions:
+  domain.Product:
+    properties:
+      id:
+        example: 1
+        type: integer
+      name:
+        example: Gaming Keyboard
+        type: string
+      price:
+        example: 75.5
+        type: number
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Product Management API in Go
+  title: Clean CRUD Postgres API
+  version: "1.0"
+paths:
+  /products:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Product'
+            type: array
+      summary: List all products
+      tags:
+      - products
+    post:
+      parameters:
+      - description: Product Body
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Product'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.Product'
+      summary: Create a product
+      tags:
+      - products
+  /products/{id}:
+    delete:
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: Delete a product
+      tags:
+      - products
+    put:
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: New Data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Product'
+      responses: {}
+      summary: Update a product
+      tags:
+      - products
+swagger: "2.0"
