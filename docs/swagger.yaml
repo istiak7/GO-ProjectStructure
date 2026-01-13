@@ -1,42 +1,4 @@
-basePath: /
-definitions:
-  dtos.CreateSupplierDto:
-    properties:
-      contact:
-        type: string
-      id:
-        type: integer
-      name:
-        type: string
-    type: object
-host: localhost:8080
 info:
   contact: {}
-  description: API for managing products and suppliers
-  title: Product & Supplier API
-  version: "1.0"
-paths:
-  /suppliers:
-    post:
-      consumes:
-      - application/json
-      description: Create a new supplier
-      parameters:
-      - description: Supplier data
-        in: body
-        name: supplier
-        required: true
-        schema:
-          $ref: '#/definitions/dtos.CreateSupplierDto'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            additionalProperties: true
-            type: object
-      summary: Create a new supplier
-      tags:
-      - suppliers
+paths: {}
 swagger: "2.0"
