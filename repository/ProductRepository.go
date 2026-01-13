@@ -63,6 +63,14 @@ func (r *ProductRepo) GetAll() ([]domain.Product, error) {
 }
 
 func (r *ProductRepo) Delete(id int) error {
+
 	result := r.db.Delete(&domain.Product{}, id)
-	return result.Error
+	if result.RowsAffected == 0 {
+		return gorm.ErrRecordNotFound
+	}
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+	
 }
