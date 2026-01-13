@@ -11,8 +11,7 @@ type Product struct {
 
 type ProductRepository interface {
 	Create(p Product) (Product, error)
-	// GetAll() ([]Product, error)
-	// GetByID(id int) (Product, error)
-	// Update(id int, p Product) (Product, error)
-	// Delete(id int) error
+	GetByID(id int) (Product, error)	
+	Update(id int, p Product) (Product, error)
+	Delete(id int) error
 }
