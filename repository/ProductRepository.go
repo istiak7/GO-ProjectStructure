@@ -41,7 +41,8 @@ func (r *ProductRepo) Update(id int, dto dtos.UpdateProductDto) (domain.Product,
 	result := r.db.Model(&product).
 		Clauses(clause.Returning{}). 
 		Where("id = ?", id).
-		Select("*").       
+		Select("*").   
+		Omit("id", "created_at").    
 		Updates(product)
 
 	if result.Error != nil {
