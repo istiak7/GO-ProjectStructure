@@ -1,12 +1,14 @@
 package usecase
+
 import (
+	"CrudApp/delivery/Suppliers/dtos"
 	"CrudApp/domain"
-	 Dtos "CrudApp/delivery/Suppliers/Dtos"
 )
+
 type SupplierUsecase struct {
 	Repo domain.SupplierRepository
 }
 
-func (u * SupplierUsecase) CreateSupplier(dto Dtos.CreateSupplierDto) (Dtos.CreateSupplierDto, error) {
+func (u *SupplierUsecase) CreateSupplier(dto dtos.CreateSupplierDto) (dtos.CreateSupplierDto, error) {
 	return u.Repo.Create(dto)
 }

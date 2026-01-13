@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"gorm.io/gorm"
+	"CrudApp/delivery/Suppliers/dtos"
 	"CrudApp/domain"
-	Dtos "CrudApp/delivery/Suppliers/Dtos"
+	"gorm.io/gorm"
 )
 
 type SupplierRepo struct {
@@ -14,14 +14,13 @@ func NewSupplierRepo(db *gorm.DB) domain.SupplierRepository {
 	return &SupplierRepo{db: db}
 }
 
-func (r *SupplierRepo) Create(dto Dtos.CreateSupplierDto) (Dtos.CreateSupplierDto, error) {
-
-    s:= domain.Supplier{
-		ID :     dto.Id,
+func (r *SupplierRepo) Create(dto dtos.CreateSupplierDto) (dtos.CreateSupplierDto, error) {
+	s := domain.Supplier{
+		ID:      dto.Id,
 		Name:    dto.Name,
 		Contact: dto.Contact,
 	}
-	
+
 	result := r.db.Create(&s)
 	return dto, result.Error
 }

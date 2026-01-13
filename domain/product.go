@@ -1,6 +1,9 @@
 package domain
 
-import "time"
+import (
+	"CrudApp/delivery/Products/dtos"
+	"time"
+)
 
 type Product struct {
 	ID        int       `json:"id" example:"1" gorm:"primaryKey"`
@@ -10,8 +13,8 @@ type Product struct {
 }
 
 type ProductRepository interface {
-	Create(p Product) (Product, error)
+	Create(dto dtos.CreateProductDto) (Product, error)
 	GetByID(id int) (Product, error)	
-	Update(id int, p Product) (Product, error)
+	Update(id int, dto dtos.UpdateProductDto) (Product, error)
 	Delete(id int) error
 }
