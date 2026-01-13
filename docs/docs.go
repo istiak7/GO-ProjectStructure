@@ -54,10 +54,6 @@ const docTemplate = `{
     "definitions": {
         "dtos.CreateSupplierDto": {
             "type": "object",
-            "required": [
-                "contact",
-                "name"
-            ],
             "properties": {
                 "contact": {
                     "type": "string"
@@ -79,8 +75,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8080",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "Product & Supplier API",
-	Description:      "API for managing products and suppliers",
+	Title:            "Test API",
+	Description:      "Testing Purpose",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

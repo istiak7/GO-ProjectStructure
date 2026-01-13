@@ -8,9 +8,6 @@ definitions:
         type: integer
       name:
         type: string
-    required:
-    - contact
-    - name
     type: object
 host: localhost:8080
 info:

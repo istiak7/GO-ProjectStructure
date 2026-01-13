@@ -9,11 +9,6 @@ import (
 	_ "CrudApp/docs"
 )
 
-// @title Product & Supplier API
-// @version 1.0
-// @description API for managing products and suppliers
-// @host localhost:8080
-// @BasePath /
 
 func main() {
 	mux := config.InitApp()

@@ -48,10 +48,6 @@
     "definitions": {
         "dtos.CreateSupplierDto": {
             "type": "object",
-            "required": [
-                "contact",
-                "name"
-            ],
             "properties": {
                 "contact": {
                     "type": "string"

@@ -8,10 +8,10 @@ import (
 
 func InitApp() *http.ServeMux {
 	db := InitDB()
-	supplierHandler := InitDependencies(db)
+	handlers := InitDependencies(db)
 
 	mux := http.NewServeMux()
-	route.SetupRoutes(mux, supplierHandler)
+	route.SetupRoutes(mux, handlers)
 
 	return mux
 }

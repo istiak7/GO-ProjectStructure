@@ -6,13 +6,15 @@ import (
 	"CrudApp/delivery/Suppliers"
 )
 
-// SetupRoutes initializes all application routes
-func SetupRoutes(mux *http.ServeMux, supplierHandler *Suppliers.SupplierHandler) {
-	// Register all route groups
+type Handlers struct {
+	Supplier *Suppliers.SupplierHandler
+	// Product  *Products.ProductHandler
+	// Auth     *Auth.AuthHandler
+}
 
+func SetupRoutes(mux *http.ServeMux, handlers *Handlers) {
 	RegisterSwaggerRoutes(mux)
-	RegisterSupplierRoutes(mux, supplierHandler)
-	// RegisterProductRoutes(mux, productHandler)
-	// RegisterLoginRoutes(mux, authHandler)
-	
+	RegisterSupplierRoutes(mux, handlers.Supplier)
+	// RegisterProductRoutes(mux, handlers.Product)
+	// RegisterLoginRoutes(mux, handlers.Auth)
 }
