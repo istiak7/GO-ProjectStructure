@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	mux := config.InitApp()
+	handler := config.InitApp()
 
 	fmt.Println("Server running at :8080")
-	log.Fatal(http.ListenAndServe(":8080", mux))
+	log.Fatal(http.ListenAndServe(":8080", handler))
 }
