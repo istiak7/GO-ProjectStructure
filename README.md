@@ -137,6 +137,7 @@ Server starts at `http://localhost:8080`
 ### Request/Response Format
 
 **Create Product:**
+
 ```json
 POST /CreateProducts
 {
@@ -146,6 +147,7 @@ POST /CreateProducts
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
