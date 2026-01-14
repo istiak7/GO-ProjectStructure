@@ -3,74 +3,61 @@ package repository
 import (
 	"CrudApp/delivery/Products/dtos"
 	"CrudApp/domain"
-	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
+	"database/sql"
+	"github.com/jmoiron/sqlx"
 )
 
 type ProductRepo struct {
-	db *gorm.DB
+	db *sqlx.DB
 }
 
-func NewProductRepo(db *gorm.DB) domain.ProductRepository {
+func NewProductRepo(db *sqlx.DB) domain.ProductRepository {
 	return &ProductRepo{db: db}
 }
 
 func (r *ProductRepo) Create(dto dtos.CreateProductDto) (domain.Product, error) {
-	p := domain.Product{
-		Name:    dto.Name,
-		Price:   dto.Price,
-
-	}
-	result := r.db.Create(&p)
-	return p, result.Error
+	var product domain.Product
+	query := `INSERT INTO products (name, price) VALUES ($1, $2) RETURNING id, name, price, created_at`
+	err := r.db.QueryRowx(query, dto.Name, dto.Price).StructScan(&product)
+	return product, err
 }
 
 func (r *ProductRepo) GetByID(id int) (domain.Product, error) {
 	var product domain.Product
-	result := r.db.First(&product, id)
-	return product, result.Error
+	query := `SELECT id, name, price, created_at FROM products WHERE id = $1`
+	err := r.db.Get(&product, query, id)
+	return product, err
 }
 
 func (r *ProductRepo) Update(id int, dto dtos.UpdateProductDto) (domain.Product, error) {
-	
-	product := domain.Product{
-		Name:  dto.Name,
-		Price: dto.Price,
+	var product domain.Product
+	query := `UPDATE products SET name = $1, price = $2 WHERE id = $3 RETURNING id, name, price, created_at`
+	err := r.db.QueryRowx(query, dto.Name, dto.Price, id).StructScan(&product)
+	if err == sql.ErrNoRows {
+		return domain.Product{}, sql.ErrNoRows
 	}
-
-	result := r.db.Model(&product).
-		Clauses(clause.Returning{}). 
-		Where("id = ?", id).
-		Select("*").   
-		Omit("id", "created_at").    
-		Updates(product)
-
-	if result.Error != nil {
-		return domain.Product{}, result.Error
-	}
-
-	if result.RowsAffected == 0 {
-		return domain.Product{}, gorm.ErrRecordNotFound
-	}
-
-	return product, nil
+	return product, err
 }
 
 func (r *ProductRepo) GetAll() ([]domain.Product, error) {
 	var products []domain.Product
-	result := r.db.Find(&products)
-	return products, result.Error
+	query := `SELECT id, name, price, created_at FROM products`
+	err := r.db.Select(&products, query)
+	return products, err
 }
 
 func (r *ProductRepo) Delete(id int) error {
-
-	result := r.db.Delete(&domain.Product{}, id)
-	if result.RowsAffected == 0 {
-		return gorm.ErrRecordNotFound
+	query := `DELETE FROM products WHERE id = $1`
+	result, err := r.db.Exec(query, id)
+	if err != nil {
+		return err
 	}
-	if result.Error != nil {
-		return result.Error
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return sql.ErrNoRows
 	}
 	return nil
-	
 }

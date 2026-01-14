@@ -6,10 +6,10 @@ import (
 	"CrudApp/repository"
 	"CrudApp/route"
 	"CrudApp/usecase"
-	"gorm.io/gorm"
+	"github.com/jmoiron/sqlx"
 )
 
-func InitDependencies(db *gorm.DB) *route.Handlers {
+func InitDependencies(db *sqlx.DB) *route.Handlers {
 	supplierRepo := repository.NewSupplierRepo(db)
 	supplierUC := &usecase.SupplierUsecase{Repo: supplierRepo}
 	supplierHandler := &Suppliers.SupplierHandler{Usecase: supplierUC}
